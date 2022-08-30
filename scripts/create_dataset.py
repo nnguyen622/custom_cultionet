@@ -10,9 +10,13 @@ from cultionet.utils import model_preprocessing
 from cultionet.utils.project_paths import setup_paths
 
 import geopandas as gpd
+import pandas as pd
 import yaml
 
 logger = logging.getLogger(__name__)
+
+geo_id_data = pd.read_csv('~/geo_id_grid_list.csv')
+geo_id_list = geo_id_data['geo_id_grid'].unique().tolist() 
 
 DEFAULT_AUGMENTATIONS = ['none', 'fliplr', 'flipud', 'flipfb',
                          'rot90', 'rot180', 'rot270',
@@ -50,7 +54,7 @@ def persist_dataset(args):
     ref_res_lists = [args.ref_res]
 
     inputs = model_preprocessing.TrainInputs(
-        regions=CONFIG['regions'],
+        regions=geo_id_list,
         years=CONFIG['years'],
         lc_path=CONFIG['lc_path']
     )
